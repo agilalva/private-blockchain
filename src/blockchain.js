@@ -113,7 +113,21 @@ class Blockchain {
     submitStar(address, message, signature, star) {
         let self = this;
         return new Promise(async (resolve, reject) => {
+            // 5 minutes
+            const maxElapsedTime = 5 * 60;
+            const messageTime = parseInt(message.split(':')[1]);
+            const currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
 
+            if (currentTime - messageTime > maxElapsedTime) {
+                return reject('Star request expired');
+            }
+
+            if (!bitcoinMessage.verify(message, address, signature)) {
+                return reject('Invalid message');
+            }
+
+            const newBlock = await self._addBlock(new BlockClass.Block({ data: star }));
+            resolve(newBlock);
         });
     }
 
