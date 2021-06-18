@@ -122,11 +122,14 @@ class Blockchain {
                 return reject('Star request expired');
             }
 
-            if (!bitcoinMessage.verify(message, address, signature)) {
+            // I've had to update the library and use this overload
+            // because I'm using Electrum as a Bitcoin Wallet.
+            if (!bitcoinMessage.verify(message, address, signature, null, true)) {
                 return reject('Invalid message');
             }
 
-            const newBlock = await self._addBlock(new BlockClass.Block({ data: star }));
+            const blockData = { ownwer: address, star: star };
+            const newBlock = await self._addBlock(new BlockClass.Block({ data: blockData }));
             resolve(newBlock);
         });
     }
