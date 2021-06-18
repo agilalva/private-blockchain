@@ -122,8 +122,7 @@ class Blockchain {
                 return reject('Star request expired');
             }
 
-            // I've had to update the library and use this overload
-            // because I'm using Electrum as a Bitcoin Wallet.
+            // https://github.com/bitcoinjs/bitcoinjs-message#about-electrum-segwit-signature-support
             if (!bitcoinMessage.verify(message, address, signature, null, true)) {
                 return reject('Invalid message');
             }
@@ -142,8 +141,13 @@ class Blockchain {
      */
     getBlockByHash(hash) {
         let self = this;
-        return new Promise((resolve, reject) => {
-
+        return new Promise((resolve) => {
+            let block = self.chain.filter(p => p.hash === hash)[0];
+            if (block) {
+                resolve(block);
+            } else {
+                resolve(null);
+            }
         });
     }
 
