@@ -127,8 +127,7 @@ class Blockchain {
                 return reject('Invalid message');
             }
 
-            const blockData = { ownwer: address, star: star };
-            const newBlock = await self._addBlock(new BlockClass.Block({ data: blockData }));
+            const newBlock = await self._addBlock(new BlockClass.Block({ owner: address, star: star }));
             resolve(newBlock);
         });
     }
@@ -177,8 +176,11 @@ class Blockchain {
     getStarsByWalletAddress(address) {
         let self = this;
         let stars = [];
-        return new Promise((resolve, reject) => {
-
+        return new Promise(async (resolve) => {
+            stars = self.chain.filter(b => b.height > 0);
+            stars = await Promise.all(stars.map(b => b.getBData()));
+            stars = stars.filter(b => b.owner === address);
+            resolve(stars);
         });
     }
 
