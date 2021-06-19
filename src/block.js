@@ -1,26 +1,25 @@
 /**
  *                          Block class
- *  The Block class is a main component into any Blockchain platform, 
+ *  The Block class is a main component into any Blockchain platform,
  *  it will store the data and act as a dataset for your application.
  *  The class will expose a method to validate the data... The body of
  *  the block will contain an Object that contain the data to be stored,
  *  the data should be stored encoded.
- *  All the exposed methods should return a Promise to allow all the methods 
+ *  All the exposed methods should return a Promise to allow all the methods
  *  run asynchronous.
  */
 
-const SHA256 = require('crypto-js/sha256');
-const hex2ascii = require('hex2ascii');
+const SHA256 = require("crypto-js/sha256");
+const hex2ascii = require("hex2ascii");
 
 class Block {
-
     // Constructor - argument data will be the object containing the transaction data
     constructor(data) {
-        this.hash = null;                                           // Hash of the block
-        this.height = 0;                                            // Block Height (consecutive number of each block)
-        this.body = Buffer.from(JSON.stringify(data)).toString('hex');   // Will contain the transactions stored in the block, by default it will encode the data
-        this.time = 0;                                              // Timestamp for the Block creation
-        this.previousBlockHash = null;                              // Reference to the previous Block Hash
+        this.hash = null; // Hash of the block
+        this.height = 0; // Block Height (consecutive number of each block)
+        this.body = Buffer.from(JSON.stringify(data)).toString("hex"); // Will contain the transactions stored in the block, by default it will encode the data
+        this.time = 0; // Timestamp for the Block creation
+        this.previousBlockHash = null; // Reference to the previous Block Hash
     }
 
     /**
@@ -38,13 +37,15 @@ class Block {
     validate() {
         let self = this;
         return new Promise((resolve) => {
-            let currentHash = self.hash;
-            let newHash = SHA256(JSON.stringify(self)).toString();
+            const currentHash = self.hash;
+            self.hash = null;
+
+            const newHash = SHA256(JSON.stringify(self)).toString();
+            self.hash = currentHash;
 
             if (currentHash === newHash) {
                 resolve(true);
-            }
-            else {
+            } else {
                 resolve(false);
             }
         });
@@ -53,27 +54,25 @@ class Block {
     /**
      *  Auxiliary Method to return the block body (decoding the data)
      *  Steps:
-     *  
+     *
      *  1. Use hex2ascii module to decode the data
      *  2. Because data is a javascript object use JSON.parse(string) to get the Javascript Object
-     *  3. Resolve with the data and make sure that you don't need to return the data for the `genesis block` 
+     *  3. Resolve with the data and make sure that you don't need to return the data for the `genesis block`
      *     or Reject with an error.
      */
     getBData() {
         let self = this;
         return new Promise((resolve, reject) => {
-            let decodedBody = hex2ascii(self.body);
-            let objBody = JSON.parse(decodedBody);
+            const decodedBody = hex2ascii(self.body);
+            const objBody = JSON.parse(decodedBody);
 
             if (self.height > 0) {
                 resolve(objBody);
-            }
-            else {
-                reject('No content');
+            } else {
+                reject("No content");
             }
         });
     }
-
 }
 
-module.exports.Block = Block;                    // Exposing the Block class as a module
+module.exports.Block = Block; // Exposing the Block class as a module
