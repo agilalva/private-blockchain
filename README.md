@@ -35,34 +35,15 @@ too but making sure the application know who owned each star.
 6. If everything is okay the star information will be stored in the block and added to the `chain`
 7. The application will allow us to retrieve the Star objects belong to an owner (wallet address).
 
-## What tools or technologies you will use to create this application?
-
--   This application will be created using Node.js and Javascript programming language. The architecture will use ES6 classes
-    because it will help us to organize the code and facilitate the maintnance of the code.
--   The company suggest to use Visual Studio Code as an IDE to write your code because it will help you debug the code easily
-    but you can choose the code editor you feel confortable with.
--   Some of the libraries or npm modules you will use are:
-    -   "bitcoinjs-lib": "^4.0.3",
-    -   "bitcoinjs-message": "^2.0.0",
-    -   "body-parser": "^1.18.3",
-    -   "crypto-js": "^3.1.9-1",
-    -   "express": "^4.16.4",
-    -   "hex2ascii": "0.0.3",
-    -   "morgan": "^1.9.1"
-        Remember if you need install any other library you will use `npm install <npm_module_name>`
-
-Libraries purpose:
-
-1. `bitcoinjs-lib` and `bitcoinjs-message`. Those libraries will help us to verify the wallet address ownership, we are going to use it to verify the signature.
-2. `express` The REST Api created for the purpose of this project it is being created using Express.js framework.
-3. `body-parser` this library will be used as middleware module for Express and will help us to read the json data submitted in a POST request.
-4. `crypto-js` This module contain some of the most important cryotographic methods and will help us to create the block hash.
-5. `hex2ascii` This library will help us to **decode** the data saved in the body of a Block.
-
 ## Screenshots
 
-![Request: http://localhost:8000/block/0 ](screenshots/GET - genesis block.png)
-![Request: http://localhost:8000/requestValidation ](screenshots/POST - requestValidation.png)
-![Use the Wallet to sign a message](screenshots/Electrum - sign message.png)
-![Request: http://localhost:8000/submitstar](screenshots/POST - submitStar.png)
-![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](screenshots/GET - getStarsByWalletAddress.png)
+1. Request the Genesis block:
+<img width="1392" alt="genesis block" src="https://user-images.githubusercontent.com/7228491/122655617-8b044f80-d14b-11eb-8d72-fd64f7c1c917.png">
+2. Request of ownership sending the wallet address:
+<img width="1392" alt="request ownership" src="https://user-images.githubusercontent.com/7228491/122655687-31505500-d14c-11eb-9cb9-d634c027ba2d.png">
+3. Sign the message with the wallet (Electrum):
+<img width="985" alt="Sign message" src="https://user-images.githubusercontent.com/7228491/122655691-3ca38080-d14c-11eb-8b57-80c3e7a56389.png">
+4. Submit the star:
+<img width="1392" alt="Submit star" src="https://user-images.githubusercontent.com/7228491/122655694-41683480-d14c-11eb-8952-39dc5e4d7141.png">
+5. Retrieve stars owned by address:
+<img width="1392" alt="Get stars by wallet address" src="https://user-images.githubusercontent.com/7228491/122655696-46c57f00-d14c-11eb-8640-62e611120759.png">
